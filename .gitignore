@@ -1,0 +1,17 @@
+*secrets.tfvars
+
+# Common terraform files
+*.tfvars
+*.tfstate
+*.tfstate.backup
+*.tfstate.backup.lock.info
+*.tfvars.example
+*.tfvars.json
+*.tfvars.sample
+*.tfvars.tmpl
+*.hcl
+*.terraform
+
+*kestra_key
+
+.history
