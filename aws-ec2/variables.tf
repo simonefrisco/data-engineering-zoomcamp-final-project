@@ -26,7 +26,7 @@ variable "settings" {
   type        = map(any)
   default = {
     "database" = {
-      allocated_storage         = 10            // storage in gigabytes
+      allocated_storage         = 20            // storage in gigabytes
       engine                    = "postgres"    // engine type
       engine_version            = "15.3"        // engine version
       instance_class            = "db.t3.micro" // rds instance type

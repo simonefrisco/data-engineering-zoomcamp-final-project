@@ -1,0 +1,44 @@
+id: fetch-kaggle-dataset
+namespace: dev
+description: Save and Execute the flow
+
+labels:
+  env: dev
+  project: debug
+
+tasks:
+  - id: wdir
+    type: io.kestra.core.tasks.flows.WorkingDirectory
+    tasks:
+     
+      - id: fetchDataset
+        type: io.kestra.plugin.scripts.python.Commands
+        runner: PROCESS
+        env:
+          KAGGLE_USERNAME: "{{ secret('KAGGLE_USERNAME') }}"
+          KAGGLE_KEY: "{{ secret('KAGGLE_KEY') }}"
+        commands:
+          - pip install kaggle
+          - kaggle datasets download -d mkechinov/direct-messaging
+        warningOnStdErr: false
+  
+      - id: printFiled
+        type: io.kestra.plugin.scripts.python.Script
+        runner: PROCESS
+        script : |
+          import os
+          print(os.listdir(os.getcwd()))
+
+      - id: zipFile
+        type: io.kestra.core.tasks.storages.LocalFiles
+        outputs:
+        - direct-messaging.zip
+      
+  - id: uploadToS3
+    type: io.kestra.plugin.aws.s3.Upload
+    accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
+    secretKeyId: "{{ secret('AWS_SECRET_KEY') }}"A
+    region: "{{ secret('AWS_REGION') }}"
+    from: "{{ outputs.zipFile.uris['direct-messaging.zip'] }}"
+    bucket: "kestra-datatalkclub"
+    key: "download/direct-messaging.zip"

@@ -1,0 +1,37 @@
+id: 1-upload-data-to-datalake
+namespace: dev
+description: Download zip file from S3 and create a Delta Table
+
+labels:
+  env: dev
+  project: debug
+
+tasks:
+  - id: wdir
+    type: io.kestra.core.tasks.flows.WorkingDirectory
+    tasks:
+
+      - id: downloadFromS3
+        type: io.kestra.plugin.aws.s3.Download
+        accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
+        secretKeyId: "{{ secret('AWS_SECRET_KEY') }}"
+        region: "{{ secret('AWS_REGION') }}"
+        bucket: "kestra-datatalkclub"
+        key: "download/direct-messaging.zip"
+
+      - id: unzip
+        type: io.kestra.plugin.compress.ArchiveDecompress
+        algorithm: ZIP
+        from: "{{outputs.downloadFromS3.uri}}"
+  
+      - id: printFiles
+        type: io.kestra.plugin.scripts.python.Script
+        runner: PROCESS
+        script : |
+          import os
+          print(os.listdir(os.getcwd()))
+
+      - id: zipFile
+        type: io.kestra.core.tasks.storages.LocalFiles
+        outputs:
+        - direct-messaging.zip
