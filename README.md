@@ -113,7 +113,7 @@ chmod +x install_docker
 sudo docker version
 ```
 
-## 2.6 Run Docker Compose 
+## 2.6 Update 'docker-compose.yml' file
 
 - Download the basic docker-compose file
 
@@ -134,22 +134,57 @@ make change in order to macth the docker-compose.yml file:
               username: "adminemailfor@datatalkclub.io"
               password: kestra_secret_pass
 ```
-
 - Postgres Configuration
 
 For simplicity I do not create a rds instance but I use the local postgres service provided by the docker-compose file.
 
-# 3) Setup Kestra
+- Enviroment Variable Configuration
 
-## 3.1 Setup Kaggle Auth
+```  
+kestra:
+    image: kestra/kestra:latest-full
+    env_file:
+      - .env_encoded
+```
+
+
+### Setup Kaggle Auth
 
 In order to fetch the dataset using the Kaggle Public API we need the auth .json file:
 - Just click on the generate token button at your [kaggle profile page](https://www.kaggle.com/settings/account)
-- Move the downloaded json file in the folder ./kestra_prod/config/kaggle.json
 
-In order to sync the Deployed Kestra Istance with our repo, the simplest way is with [git.Sync](https://kestra.io/plugins/plugin-git/tasks/io.kestra.plugin.git.sync)
+### Setup Secrets
 
-Create your first Kestra Flow, just copy-paste the following code in the UI editor :
+Create a .env file with `nano .env` and set credentials from kaggle.json file:
+
+```
+KAGGLE_USERNAME=XXXXX
+KAGGLE_KEY=XXXXXXXXXX
+t=t # fake workaround var
+```
+
+run the following snippet in order to encode the .env file
+
+```bash
+while IFS='=' read -r key value; do
+    echo "SECRET_$key=$(echo -n "$value" | base64)";
+done < .env > .env_encoded
+```
+
+# 3) Run Kestra
+
+## 3.1 Docker compose
+
+```
+sudo docker-compose up -d
+```
+
+
+## 3.2 Initialize Prod Namespace
+
+In order to sync the namespace files with our repo, the simplest way is using [git.Sync](https://kestra.io/plugins/plugin-git/tasks/io.kestra.plugin.git.sync)
+
+Create your first Kestra Flow, just copy-paste the following code in the UI editor -> Create Flow -> Save -> Execute :
 
 ```yaml
 id: sync_from_git
