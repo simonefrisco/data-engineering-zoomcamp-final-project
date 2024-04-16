@@ -5,7 +5,7 @@
 
 
 
-# 2) Terraform Deployment 
+# 2) Infrastructure Deployment 
 
 terraform : https://github.com/kestra-io/terraform-deployments/tree/main/aws-ec2
 manual : https://kestra.io/docs/installation/aws-ec2
@@ -13,10 +13,12 @@ manual : https://kestra.io/docs/installation/aws-ec2
 
 Requirements:
 - AWS CLI installed with proper user configure 
+- Clone this repo and open the terminal
 
-## 2.1 Clone the official starter template
+## 2.1 Terraform Template
 
-Using Windows 
+I created a terraform project folder starting from the official template:
+ 
 ```
 git clone https://github.com/kestra-io/terraform-deployments/
 move .\terraform-deployments\aws-ec2 .\aws-ec2
@@ -40,14 +42,14 @@ Sadly, I was able to deploy almost all resources tranne the webserver.
 
 I think that the problem was in some of the docker configuration so I decided to deploy the webserver partially manually.
 
-
-In the aws-ec2 folder of this repo you can find a modified version of the main.tf :
+In the ./aws-ec2 folder you can find a modified version of original template, the main differences are:
 - auto generate ssh key
 - same aws_istance resource without provisioner and user_data
+- no dedicated rds istance
 
 ## 2.2 Deploy terraform project
 
-Make sure to set the proper aws profile and then run terraform commands:
+> Note: the current version of this configuration assumes that you already have an IAM user roles with the corresponding policies to provisione AWS resources.
 
 ```
 set AWS_PROFILE=your-aws-cli-profile
@@ -75,11 +77,12 @@ terraform destroy -var-file="secrets.tfvars"
 
 open a bash terminal : 
 
+```
 mv kestra_key kestra_key.pem
 chmod 400 kestra_key
 ssh -i "kestra_key" ubuntu@"ec2-XX-XXX-XXX-XXX.eu-south-1.compute.amazonaws.com
+```
 
-> Note: the current version of this configuration assumes that you already have an IAM user roles with the corresponding policies to provisione AWS resources.
 
 ## 2.5 Install Docker
 
@@ -134,9 +137,15 @@ make change in order to macth the docker-compose.yml file:
 
 - Postgres Configuration
 
-For simplicity I do not create a rds instance but I use the local postgres instance provided by the docker-compose file.
+For simplicity I do not create a rds instance but I use the local postgres service provided by the docker-compose file.
 
-# 3) Setup Kestra Istance
+# 3) Setup Kestra
+
+## 3.1 Setup Kaggle Auth
+
+In order to fetch the dataset using the Kaggle Public API we need the auth .json file:
+- Just click on the generate token button at your [kaggle profile page](https://www.kaggle.com/settings/account)
+- Move the downloaded json file in the folder ./kestra_prod/config/kaggle.json
 
 In order to sync the Deployed Kestra Istance with our repo, the simplest way is with [git.Sync](https://kestra.io/plugins/plugin-git/tasks/io.kestra.plugin.git.sync)
 
