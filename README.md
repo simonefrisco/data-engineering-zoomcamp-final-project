@@ -111,6 +111,8 @@ chmod +x install_docker
 ./install_docker
 
 sudo docker version
+sudo apt install docker-compose
+
 ```
 
 ## 2.6 Update 'docker-compose.yml' file

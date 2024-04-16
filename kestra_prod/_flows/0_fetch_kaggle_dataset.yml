@@ -37,7 +37,7 @@ tasks:
   - id: uploadToS3
     type: io.kestra.plugin.aws.s3.Upload
     accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
-    secretKeyId: "{{ secret('AWS_SECRET_KEY') }}"A
+    secretKeyId: "{{ secret('AWS_SECRET_KEY') }}"
     region: "{{ secret('AWS_REGION') }}"
     from: "{{ outputs.zipFile.uris['direct-messaging.zip'] }}"
     bucket: "kestra-datatalkclub"
