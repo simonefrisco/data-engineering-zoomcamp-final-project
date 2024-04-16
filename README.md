@@ -1,15 +1,15 @@
 # Deploy Kestra on AWS
 
-1) Manual Deployment
+# 1) Introduction
 
-source : https://kestra.io/docs/installation/aws-ec2
 
-2) Terraform Deployment
-
-source : https://github.com/kestra-io/terraform-deployments/tree/main/aws-ec2
 
 
 # 2) Terraform Deployment 
+
+terraform : https://github.com/kestra-io/terraform-deployments/tree/main/aws-ec2
+manual : https://kestra.io/docs/installation/aws-ec2
+
 
 Requirements:
 - AWS CLI installed with proper user configure 
@@ -63,14 +63,13 @@ web_public_dns = "ec2-XX-XXX-XXX-XXX.eu-south-1.compute.amazonaws.com"
 web_public_ip = "XXX.XXX.XXX.XXX"
 ```
 
-## Destroy Terraform Resources
-
+## 2.3 Destroy Terraform Resources
 When you want:
 ```
 terraform destroy -var-file="secrets.tfvars"
 ```
 
-## Connect to SSH
+## 2.4 Connect to SSH
 
 - Using the private key generated in the previous step
 
@@ -82,9 +81,9 @@ ssh -i "kestra_key" ubuntu@"ec2-XX-XXX-XXX-XXX.eu-south-1.compute.amazonaws.com
 
 > Note: the current version of this configuration assumes that you already have an IAM user roles with the corresponding policies to provisione AWS resources.
 
-## Install Docker
+## 2.5 Install Docker
 
-'''
+```
 sudo apt-get update
 sudo apt-get install ca-certificates curl
 sudo install -m 0755 -d /etc/apt/keyrings
@@ -103,15 +102,15 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 sudo usermod -aG docker $USER
 
 newgrp docker
-'''
 
 chmod +x install_docker
 
 ./install_docker
 
 sudo docker version
+```
 
-## Run Docker Compose 
+## 2.6 Run Docker Compose 
 
 - Download the basic docker-compose file
 
@@ -136,3 +135,30 @@ make change in order to macth the docker-compose.yml file:
 - Postgres Configuration
 
 For simplicity I do not create a rds instance but I use the local postgres instance provided by the docker-compose file.
+
+# 3) Setup Kestra Istance
+
+In order to sync the Deployed Kestra Istance with our repo, the simplest way is with [git.Sync](https://kestra.io/plugins/plugin-git/tasks/io.kestra.plugin.git.sync)
+
+Create your first Kestra Flow, just copy-paste the following code in the UI editor :
+
+```yaml
+id: sync_from_git
+namespace: prod
+
+tasks:
+  - id: git
+    type: io.kestra.plugin.git.Sync
+    url: https://github.com/kestra-io/scripts
+    branch: main
+    username: git_username
+    password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
+    gitDirectory: kestra_prod # optional, otherwise all files
+    namespaceFilesDirectory: prod # optional, otherwise the namespace root directory
+    dryRun: true  # if true, print the output of what files will be added/modified or deleted without overwriting the files yet
+
+triggers:
+  - id: every_day
+    type: io.kestra.core.models.triggers.types.Schedule
+    cron: "0 0 */1 * *"
+```
