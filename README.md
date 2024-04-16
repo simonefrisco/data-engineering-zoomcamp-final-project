@@ -149,10 +149,8 @@ namespace: prod
 tasks:
   - id: git
     type: io.kestra.plugin.git.Sync
-    url: https://github.com/kestra-io/scripts
+    url: https://github.com/simonefrisco/data-engineering-zoomcamp-final-project
     branch: main
-    username: git_username
-    password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
     gitDirectory: kestra_prod # optional, otherwise all files
     namespaceFilesDirectory: prod # optional, otherwise the namespace root directory
     dryRun: true  # if true, print the output of what files will be added/modified or deleted without overwriting the files yet
