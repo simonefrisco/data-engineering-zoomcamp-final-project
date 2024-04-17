@@ -1,10 +1,9 @@
 id: 1-upload-data-to-datalake
-namespace: dev
+namespace: prod
 description: Download zip file from S3 and create a Delta Table
 
-labels:
-  env: dev
-  project: debug
+variables:
+  aws_s3_bucket : s3://kestra-datatalkclub-project
 
 tasks:
   - id: wdir
@@ -24,14 +23,17 @@ tasks:
         algorithm: ZIP
         from: "{{outputs.downloadFromS3.uri}}"
   
-      - id: printFiles
+      - id : uploadTable
         type: io.kestra.plugin.scripts.python.Script
-        runner: PROCESS
-        script : |
-          import os
-          print(os.listdir(os.getcwd()))
-
-      - id: zipFile
-        type: io.kestra.core.tasks.storages.LocalFiles
-        outputs:
-        - direct-messaging.zip
+        runner: DOCKER
+        docker:
+          image: ghcr.io/kestra-io/polars:latest
+          pullPolicy: IF_NOT_PRESENT
+        beforeCommands:
+          - "pip install deltalake"
+        inputFiles : 
+          messages-demo.csv : '{{ outputs.unzip.files["messages-demo.csv"] }}'
+          campaigns.csv : '{{ outputs.unzip.files["campaigns.csv"] }}'
+          client_first_purchase_date.csv : '{{ outputs.unzip.files["client_first_purchase_date.csv"] }}'
+          holidays.csv : '{{ outputs.unzip.files["holidays.csv"] }}'
+        script: "{{ render(read('scripts/stage1/import_data.py')) }}"
