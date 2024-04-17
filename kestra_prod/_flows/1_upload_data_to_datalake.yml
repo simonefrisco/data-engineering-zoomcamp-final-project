@@ -6,6 +6,9 @@ labels:
   env: dev
   project: debug
 
+variables:
+  aws_s3_bucket : s3://kestra-datatalkclub-project
+
 tasks:
   - id: wdir
     type: io.kestra.core.tasks.flows.WorkingDirectory
@@ -27,11 +30,27 @@ tasks:
       - id: printFiles
         type: io.kestra.plugin.scripts.python.Script
         runner: PROCESS
+        namespaceFiles:
+          enabled: true
         script : |
           import os
-          print(os.listdir(os.getcwd()))
+          def print_files(directory):
+              for root, dirs, files in os.walk(directory):
+                  for file in files:
+                      print(os.path.join(root, file))
+          print_files(os.getcwd())
 
-      - id: zipFile
-        type: io.kestra.core.tasks.storages.LocalFiles
-        outputs:
-        - direct-messaging.zip
+      - id : uploadTable
+        type: io.kestra.plugin.scripts.python.Script
+        runner: DOCKER
+        docker:
+          image: ghcr.io/kestra-io/polars:latest
+          pullPolicy: IF_NOT_PRESENT
+        beforeCommands:
+          - "pip install deltalake"
+        inputFiles : 
+          messages-demo.csv : '{{ outputs.unzip.files["messages-demo.csv"] }}'
+          campaigns.csv : '{{ outputs.unzip.files["campaigns.csv"] }}'
+          client_first_purchase_date.csv : '{{ outputs.unzip.files["client_first_purchase_date.csv"] }}'
+          holidays.csv : '{{ outputs.unzip.files["holidays.csv"] }}'
+        script: "{{ render(read('scripts/stage1/import_data.py')) }}"
