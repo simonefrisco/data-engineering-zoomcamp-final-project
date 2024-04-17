@@ -1,0 +1,11 @@
+id: clean-istance
+namespace: dev
+description: Purge Executions
+
+tasks:
+  - id: "purge"
+    type: "io.kestra.core.tasks.storages.Purge"
+    endDate: "{{ now() }}"
+    states: 
+    - KILLED
+    - FAILED
