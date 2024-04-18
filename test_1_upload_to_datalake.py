@@ -1,25 +1,62 @@
+
+
+# !pip install fsspec s3fs
+#%% []
+import deltalake
+deltalake.__version__
+#%% []
+
+
+import polars as pl
+import s3fs
+campaigns = pl.read_csv("data/archive/campaigns.csv",try_parse_dates=True)
+
+fs = s3fs.S3FileSystem()
+uri_campaigns = "s3://kestra-datatalkclub-project/datalake/raw/campaigns/campaignsv3.parquet"
+
+with fs.open(uri_campaigns, mode='wb') as f:
+    campaigns.write_parquet(f)
+
+
 #%% []
 
 import polars as pl
+from deltalake.schema import _convert_pa_schema_to_delta
+from deltalake import write_deltalake
 
 campaigns = pl.read_csv("data/archive/campaigns.csv",try_parse_dates=True)
-(
-    campaigns.shape
-)
+
+delta_schema = _convert_pa_schema_to_delta(campaigns.to_arrow().schema,large_dtypes=True)
+
 #%% []
 
-uri_campaigns = "s3://kestra-datatalkclub/deltalake/campaigns"
+uri_campaigns = "s3://kestra-datatalkclub-project/deltalake/campaignsv20"
 
 (
     campaigns
         .write_delta(
             uri_campaigns,
-            delta_write_options={"schema_mode": "overwrite"},
+            mode='append',
             storage_options=storage_options,
     )
 )
 
+# write_deltalake(
+#     uri_campaigns, 
+#     campaigns.to_arrow(),
+#     mode="append",
+#     large_dtypes = True , 
+#     # schema_mode ="merge",
+#     storage_options = storage_options ,
+#     schema =  delta_schema
+#     )
+
 #%% []
+
+data = pl.read_delta(uri_campaigns, storage_options=storage_options)
+data
+#%% []
+
 
 # create a column with 13 different ids
 partitions = campaigns.with_row_count("id_p").select(pl.col("id_p") // 100)
