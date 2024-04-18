@@ -27,10 +27,10 @@ tasks:
         type: io.kestra.plugin.scripts.python.Script
         runner: DOCKER
         docker:
-          image: ghcr.io/kestra-io/polars:latest
+          image: python:3.9.19-slim
           pullPolicy: IF_NOT_PRESENT
         beforeCommands:
-          - "pip install deltalake"
+          - "pip install deltalake==0.15.3 polars"
         inputFiles : 
           messages-demo.csv : '{{ outputs.unzip.files["messages-demo.csv"] }}'
           campaigns.csv : '{{ outputs.unzip.files["campaigns.csv"] }}'
