@@ -1,4 +1,62 @@
-source : https://github.com/kestra-io/terraform-deployments/tree/main/aws-ec2
+# Intro
+
+## 2.1  Clone official template
+I created a terraform project folder starting from the official template:
+
+> credit : https://github.com/kestra-io/terraform-deployments/tree/main/aws-ec2
+
+```
+git clone https://github.com/kestra-io/terraform-deployments/
+move .\terraform-deployments\aws-ec2 .\aws-ec2
+rmdir /s /q .\terraform-deployments
+```
+At this point, following the readme istructions you have to :
+1) create a secrets.tfvars file with the following variables:
+```
+db_username= "xxxx"
+db_password= "xxxx"
+my_ip= "xxxx"
+aws_access_key= "xxxx"
+aws_secret_key= "xxxx"
+```
+2) create the key piar
+3) initialize the terraform directory and apply the config
+
+! Attention, make sure to change the ami-xxxxxxx value based on your aws region
+
+Sadly, I was able to deploy almost all resources tranne the webserver.
+
+I think that the problem was in some of the docker configuration so I decided to deploy the webserver partially manually.
+
+At the **[./aws-ec2](https://github.com/simonefrisco/data-engineering-zoomcamp-final-project/tree/main/aws-ec2-config)** folder you can find a modified version of original template, the main differences are:
+- auto generate ssh key
+- same aws_istance resource without provisioner and user_data
+- no dedicated rds istance
+
+
+## 2.2 Deploy terraform project
+
+> Note: the current version of this configuration assumes that you already have an IAM user roles with the corresponding policies to provisione AWS resources.
+
+```
+set AWS_PROFILE=your-aws-cli-profile
+terraform init
+terraform apply -var-file="secrets.tfvars"
+```
+
+### Output of the Terraform Apply
+
+```
+Outputs:
+web_public_dns = "ec2-XX-XXX-XXX-XXX.eu-south-1.compute.amazonaws.com"
+web_public_ip = "XXX.XXX.XXX.XXX"
+```
+
+## 2.3 Destroy Terraform Resources
+When you want:
+```
+terraform destroy -var-file="secrets.tfvars"
+```
 
 # Deploy Kestra on AWS
 
