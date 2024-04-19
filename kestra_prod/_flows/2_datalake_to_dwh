@@ -3,7 +3,7 @@ namespace: prod
 tasks:
   - id: "redshift_create_table_campaigns"
     type: "io.kestra.plugin.jdbc.redshift.Query"
-    url: "{{ secret('REDSHIFT_JDBC') }}"
+    url: "jdbc:redshift://default-workgroup.763271504165.eu-central-1.redshift-serverless.amazonaws.com:5439/dev"
     username: "{{ secret('REDSHIFT_USER') }}"
     password:  "{{ secret('REDSHIFT_PASSWORD') }}"
     sql: |
@@ -46,7 +46,7 @@ tasks:
 
   - id: "redshift_create_table_messages"
     type: "io.kestra.plugin.jdbc.redshift.Query"
-    url: "{{ secret('REDSHIFT_JDBC') }}"
+    url: "jdbc:redshift://default-workgroup.763271504165.eu-central-1.redshift-serverless.amazonaws.com:5439/dev"
     username: "{{ secret('REDSHIFT_USER') }}"
     password:  "{{ secret('REDSHIFT_PASSWORD') }}"
     sql: |
@@ -74,7 +74,7 @@ tasks:
 
   - id: "redshift_create_table_first_touch"
     type: "io.kestra.plugin.jdbc.redshift.Query"
-    url: "{{ secret('REDSHIFT_JDBC') }}"
+    url: "jdbc:redshift://default-workgroup.763271504165.eu-central-1.redshift-serverless.amazonaws.com:5439/dev"
     username: "{{ secret('REDSHIFT_USER') }}"
     password:  "{{ secret('REDSHIFT_PASSWORD') }}"
     sql: |
@@ -86,7 +86,7 @@ tasks:
 
   - id: "redshift_insert_into_messages"
     type: "io.kestra.plugin.jdbc.redshift.Query"
-    url: "{{ secret('REDSHIFT_JDBC') }}"
+    url: "jdbc:redshift://default-workgroup.763271504165.eu-central-1.redshift-serverless.amazonaws.com:5439/dev"
     username: "{{ secret('REDSHIFT_USER') }}"
     password:  "{{ secret('REDSHIFT_PASSWORD') }}"
     sql: |
@@ -97,7 +97,7 @@ tasks:
 
   - id: "redshift_insert_into_campaigns"
     type: "io.kestra.plugin.jdbc.redshift.Query"
-    url: "{{ secret('REDSHIFT_JDBC') }}"
+    url: "jdbc:redshift://default-workgroup.763271504165.eu-central-1.redshift-serverless.amazonaws.com:5439/dev"
     username: "{{ secret('REDSHIFT_USER') }}"
     password:  "{{ secret('REDSHIFT_PASSWORD') }}"
     sql: |
@@ -108,7 +108,7 @@ tasks:
 
   - id: "redshift_insert_into_first_touch"
     type: "io.kestra.plugin.jdbc.redshift.Query"
-    url: "{{ secret('REDSHIFT_JDBC') }}"
+    url: "jdbc:redshift://default-workgroup.763271504165.eu-central-1.redshift-serverless.amazonaws.com:5439/dev"
     username: "{{ secret('REDSHIFT_USER') }}"
     password:  "{{ secret('REDSHIFT_PASSWORD') }}"
     sql: |
