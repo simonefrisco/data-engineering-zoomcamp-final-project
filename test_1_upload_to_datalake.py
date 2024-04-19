@@ -1,4 +1,59 @@
 
+#%% []
+
+
+import polars.selectors as cs
+import polars as pl
+import s3fs
+#%% []
+
+fs = s3fs.S3FileSystem()
+uri_campaigns = "s3://kestra-datatalkclub-project/download/messages.csv"
+campaigns = pl.scan_csv("data/archive/messages-demo.csv",try_parse_dates=True)
+
+with fs.open(uri_campaigns, mode='wb') as f:
+    campaigns.select(['id',
+        'message_id',
+        'campaign_id',
+        'message_type',
+        'client_id',
+        'channel',
+        'category',
+        'platform',
+        'email_provider',
+        'stream',
+        'date',
+        'sent_at',
+        'is_opened',
+        'opened_first_time_at',
+        'opened_last_time_at',
+        'is_clicked',
+        'clicked_first_time_at',
+        'clicked_last_time_at',
+        'is_unsubscribed',
+        'unsubscribed_at',
+        'is_purchased',
+        'purchased_at',
+        ]).cast({cs.all() : pl.String }).fill_null('').collect().write_csv(f)
+    
+
+#%% []
+(
+    pl
+    .scan_csv("data/archive/messages-demo.csv",try_parse_dates=True)
+    .with_columns([
+        pl.col("date").dt.strftime('%Y-%m-%d').alias("date_day")
+    ])
+    .sink_parquet("data/archive/messages.parquet")
+)
+#%% []
+fs = s3fs.S3FileSystem()
+uri_campaigns = "s3://kestra-datatalkclub-project/download/messages_p.parquet"
+
+with fs.open(uri_campaigns, mode='wb') as f:
+    pl.read_parquet('data/archive/messages.parquet').write_parquet(f)
+
+#%% []
 
 # !pip install fsspec s3fs
 #%% []
