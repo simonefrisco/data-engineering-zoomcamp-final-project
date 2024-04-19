@@ -37,3 +37,47 @@ tasks:
           client_first_purchase_date.csv : '{{ outputs.unzip.files["client_first_purchase_date.csv"] }}'
           holidays.csv : '{{ outputs.unzip.files["holidays.csv"] }}'
         script: "{{ render(read('scripts/stage1/import_data.py')) }}"
+
+      - id: parquetFiles
+        type: io.kestra.core.tasks.storages.LocalFiles
+        outputs:
+        - messages.parquet
+        - campaigns.parquet
+        - holidays.parquet
+        - client_first_purchase_date.parquet
+
+  - id: uploadToS3File1
+    type: io.kestra.plugin.aws.s3.Upload
+    accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
+    secretKeyId: "{{ secret('AWS_SECRET_KEY') }}"
+    region: "eu-central-1"
+    from: "{{ outputs.parquetFiles.uris['messages.parquet'] }}"
+    bucket: "kestra-datatalkclub-project"
+    key: "download/messages.parquet"
+
+  - id: uploadToS3File2
+    type: io.kestra.plugin.aws.s3.Upload
+    accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
+    secretKeyId: "{{ secret('AWS_SECRET_KEY') }}"
+    region: "eu-central-1"
+    from: "{{ outputs.parquetFiles.uris['campaigns.parquet'] }}"
+    bucket: "kestra-datatalkclub-project"
+    key: "download/campaigns.parquet"
+
+  - id: uploadToS3File3
+    type: io.kestra.plugin.aws.s3.Upload
+    accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
+    secretKeyId: "{{ secret('AWS_SECRET_KEY') }}"
+    region: "eu-central-1"
+    from: "{{ outputs.parquetFiles.uris['holidays.parquet'] }}"
+    bucket: "kestra-datatalkclub-project"
+    key: "download/holidays.parquet"
+
+  - id: uploadToS3File4
+    type: io.kestra.plugin.aws.s3.Upload
+    accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
+    secretKeyId: "{{ secret('AWS_SECRET_KEY') }}"
+    region: "eu-central-1"
+    from: "{{ outputs.parquetFiles.uris['client_first_purchase_date.parquet'] }}"
+    bucket: "kestra-datatalkclub-project"
+    key: "download/client_first_purchase_date.parquet"
