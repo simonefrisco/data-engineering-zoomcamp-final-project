@@ -1,0 +1,110 @@
+id: 2-datalake-to-dwh
+namespace: prod
+tasks:
+  - id: "redshift_create_table_campaigns"
+    type: "io.kestra.plugin.jdbc.redshift.Query"
+    url: jdbc:redshift:default-workgroup.763271504165.eu-central-1.redshift-serverless.amazonaws.com
+    username: "{{ secret('REDSHIFT_USER') }}"
+    password:  "{{ secret('REDSHIFT_PASSWORD') }}"
+    sql: |
+      CREATE TABLE public.l0_messages (
+          id bigint ENCODE az64,
+          message_id character varying(256) ENCODE lzo,
+          campaign_id bigint ENCODE az64,
+          message_type character varying(256) ENCODE lzo,
+          client_id bigint ENCODE az64
+          distkey
+      ,
+              channel character varying(256) ENCODE lzo,
+              category character varying(256) ENCODE lzo,
+              platform character varying(256) ENCODE lzo,
+              email_provider character varying(256) ENCODE lzo,
+              stream character varying(256) ENCODE lzo,
+              date date ENCODE az64,
+              sent_at bigint ENCODE az64,
+              is_opened character varying(256) ENCODE lzo,
+              opened_first_time_at bigint ENCODE az64,
+              opened_last_time_at bigint ENCODE az64,
+              is_clicked character varying(256) ENCODE lzo,
+              clicked_first_time_at bigint ENCODE az64,
+              clicked_last_time_at bigint ENCODE az64,
+              is_unsubscribed character varying(256) ENCODE lzo,
+              unsubscribed_at bigint ENCODE az64,
+              is_hard_bounced character varying(256) ENCODE lzo,
+              hard_bounced_at character varying(256) ENCODE lzo,
+              is_soft_bounced character varying(256) ENCODE lzo,
+              soft_bounced_at character varying(256) ENCODE lzo,
+              is_complained character varying(256) ENCODE lzo,
+              complained_at bigint ENCODE az64,
+              is_blocked character varying(256) ENCODE lzo,
+              blocked_at character varying(256) ENCODE lzo,
+              is_purchased character varying(256) ENCODE lzo,
+              purchased_at bigint ENCODE az64,
+              created_at character varying(256) ENCODE lzo,
+              updated_at character varying(256) ENCODE lzo,
+              date_day character varying(256) ENCODE lzo
+      ) DISTSTYLE AUTO;
+
+  - id: "redshift_create_table_messages"
+    type: "io.kestra.plugin.jdbc.redshift.Query"
+    url: jdbc:redshift:default-workgroup.763271504165.eu-central-1.redshift-serverless.amazonaws.com
+    username: "{{ secret('REDSHIFT_USER') }}"
+    password:  "{{ secret('REDSHIFT_PASSWORD') }}"
+    sql: |
+      CREATE TABLE public.l0_campaigns (
+          id integer ENCODE az64,
+          campaign_type character varying(256) ENCODE lzo,
+          channel character varying(256) ENCODE lzo,
+          topic character varying(256) ENCODE lzo,
+          started_at timestamp without time zone ENCODE az64,
+          finished_at timestamp without time zone ENCODE az64,
+          total_count integer ENCODE az64,
+          ab_test boolean ENCODE raw,
+          warmup_mode boolean ENCODE raw,
+          hour_limit integer ENCODE az64,
+          subject_length real ENCODE raw,
+          subject_with_personalization boolean ENCODE raw,
+          subject_with_deadline boolean ENCODE raw,
+          subject_with_emoji boolean ENCODE raw,
+          subject_with_bonuses boolean ENCODE raw,
+          subject_with_discount boolean ENCODE raw,
+          subject_with_saleout boolean ENCODE raw,
+          is_test character varying(256) ENCODE lzo,
+          position character varying(256) ENCODE lzo
+      ) DISTSTYLE AUTO;
+
+  - id: "redshift_create_table_first_touch"
+    type: "io.kestra.plugin.jdbc.redshift.Query"
+    url: jdbc:redshift:default-workgroup.763271504165.eu-central-1.redshift-serverless.amazonaws.com
+    username: "{{ secret('REDSHIFT_USER') }}"
+    password:  "{{ secret('REDSHIFT_PASSWORD') }}"
+    sql: |
+      CREATE TABLE public.l0_first_touch (
+          client_id bigint ENCODE az64
+          distkey
+      ,
+              first_purchase_date date ENCODE az64
+      ) DISTSTYLE AUTO;
+
+  # - id: "redshift_insert_into_messages"
+  #   type: "io.kestra.plugin.jdbc.redshift.Query"
+  #   url: jdbc:redshift:default-workgroup.763271504165.eu-central-1.redshift-serverless.amazonaws.com
+  #   username: "{{ secret('REDSHIFT_USER') }}"
+  #   password:  "{{ secret('REDSHIFT_PASSWORD') }}"
+  #   sql: |
+  #     copy products
+  #     from 'dynamodb://products'
+  #     credentials
+  #     'aws_access_key_id=<access-key>;aws_secret_access_key=<secret-key>'
+  #     readratio 50;
+
+  - id: "redshift_insert_into_campaigns"
+    type: "io.kestra.plugin.jdbc.redshift.Query"
+    url: jdbc:redshift:default-workgroup.763271504165.eu-central-1.redshift-serverless.amazonaws.com
+    username: "{{ secret('REDSHIFT_USER') }}"
+    password:  "{{ secret('REDSHIFT_PASSWORD') }}"
+    sql: |
+      copy public.l0_campaigns
+      from ''s3://kestra-datatalkclub-project/downalod/campaigns.parquet'
+      credentials 'aws_access_key_id=<access-key>; aws_secret_access_key=<secret-key>'
+      PARQUET;

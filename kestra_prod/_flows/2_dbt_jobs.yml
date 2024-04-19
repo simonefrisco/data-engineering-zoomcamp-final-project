@@ -25,7 +25,7 @@ tasks:
           outputs:
             dev:
               type: redshift
-              host: "{{ secret('REDSHIFT_HOST') }}"
+              host: {{ secret('REDSHIFT_HOST') }} default-workgroup.763271504165.eu-central-1.redshift-serverless.amazonaws.com
               user: "{{ secret('REDSHIFT_USER') }}"
               password: "{{ secret('REDSHIFT_PASSWORD') }}"
               port: 5439
