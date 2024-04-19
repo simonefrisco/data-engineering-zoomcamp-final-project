@@ -3,17 +3,16 @@ namespace: prod
 tasks:
   - id: "redshift_create_table_campaigns"
     type: "io.kestra.plugin.jdbc.redshift.Query"
-    url: jdbc:redshift:default-workgroup.763271504165.eu-central-1.redshift-serverless.amazonaws.com
+    url: "{{ secret('REDSHIFT_JDBC') }}"
     username: "{{ secret('REDSHIFT_USER') }}"
     password:  "{{ secret('REDSHIFT_PASSWORD') }}"
     sql: |
-      CREATE TABLE public.l0_messages (
+      CREATE TABLE IF NOT EXISTS public.raw_messages (
           id bigint ENCODE az64,
           message_id character varying(256) ENCODE lzo,
           campaign_id bigint ENCODE az64,
           message_type character varying(256) ENCODE lzo,
-          client_id bigint ENCODE az64
-          distkey
+          client_id bigint ENCODE az64 
       ,
               channel character varying(256) ENCODE lzo,
               category character varying(256) ENCODE lzo,
@@ -47,11 +46,11 @@ tasks:
 
   - id: "redshift_create_table_messages"
     type: "io.kestra.plugin.jdbc.redshift.Query"
-    url: jdbc:redshift:default-workgroup.763271504165.eu-central-1.redshift-serverless.amazonaws.com
+    url: "{{ secret('REDSHIFT_JDBC') }}"
     username: "{{ secret('REDSHIFT_USER') }}"
     password:  "{{ secret('REDSHIFT_PASSWORD') }}"
     sql: |
-      CREATE TABLE public.l0_campaigns (
+      CREATE TABLE IF NOT EXISTS public.raw_campaigns (
           id integer ENCODE az64,
           campaign_type character varying(256) ENCODE lzo,
           channel character varying(256) ENCODE lzo,
@@ -75,36 +74,45 @@ tasks:
 
   - id: "redshift_create_table_first_touch"
     type: "io.kestra.plugin.jdbc.redshift.Query"
-    url: jdbc:redshift:default-workgroup.763271504165.eu-central-1.redshift-serverless.amazonaws.com
+    url: "{{ secret('REDSHIFT_JDBC') }}"
     username: "{{ secret('REDSHIFT_USER') }}"
     password:  "{{ secret('REDSHIFT_PASSWORD') }}"
     sql: |
-      CREATE TABLE public.l0_first_touch (
+      CREATE TABLE IF NOT EXISTS public.raw_first_touch (
           client_id bigint ENCODE az64
-          distkey
       ,
               first_purchase_date date ENCODE az64
       ) DISTSTYLE AUTO;
 
-  # - id: "redshift_insert_into_messages"
-  #   type: "io.kestra.plugin.jdbc.redshift.Query"
-  #   url: jdbc:redshift:default-workgroup.763271504165.eu-central-1.redshift-serverless.amazonaws.com
-  #   username: "{{ secret('REDSHIFT_USER') }}"
-  #   password:  "{{ secret('REDSHIFT_PASSWORD') }}"
-  #   sql: |
-  #     copy products
-  #     from 'dynamodb://products'
-  #     credentials
-  #     'aws_access_key_id=<access-key>;aws_secret_access_key=<secret-key>'
-  #     readratio 50;
-
-  - id: "redshift_insert_into_campaigns"
+  - id: "redshift_insert_into_messages"
     type: "io.kestra.plugin.jdbc.redshift.Query"
-    url: jdbc:redshift:default-workgroup.763271504165.eu-central-1.redshift-serverless.amazonaws.com
+    url: "{{ secret('REDSHIFT_JDBC') }}"
     username: "{{ secret('REDSHIFT_USER') }}"
     password:  "{{ secret('REDSHIFT_PASSWORD') }}"
     sql: |
-      copy public.l0_campaigns
-      from ''s3://kestra-datatalkclub-project/downalod/campaigns.parquet'
-      credentials 'aws_access_key_id=<access-key>; aws_secret_access_key=<secret-key>'
+      copy public.raw_messages
+      from 's3://kestra-datatalkclub-project/downalod/messages.parquet'
+      IAM_ROLE {{secret('IAM_ROLE')}}
+      PARQUET;
+
+  - id: "redshift_insert_into_campaigns"
+    type: "io.kestra.plugin.jdbc.redshift.Query"
+    url: "{{ secret('REDSHIFT_JDBC') }}"
+    username: "{{ secret('REDSHIFT_USER') }}"
+    password:  "{{ secret('REDSHIFT_PASSWORD') }}"
+    sql: |
+      copy public.raw_campaigns
+      from 's3://kestra-datatalkclub-project/downalod/campaigns.parquet'
+      IAM_ROLE {{secret('IAM_ROLE')}}
+      PARQUET;
+
+  - id: "redshift_insert_into_first_touch"
+    type: "io.kestra.plugin.jdbc.redshift.Query"
+    url: "{{ secret('REDSHIFT_JDBC') }}"
+    username: "{{ secret('REDSHIFT_USER') }}"
+    password:  "{{ secret('REDSHIFT_PASSWORD') }}"
+    sql: |
+      copy public.raw_first_touch
+      from 's3://kestra-datatalkclub-project/downalod/client_first_purchase_date.parquet'
+      IAM_ROLE {{secret('IAM_ROLE')}}
       PARQUET;
