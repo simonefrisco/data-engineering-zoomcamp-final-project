@@ -13,7 +13,7 @@ select
     , client_id ID_CLIENT
     , campaign_id ID_CAMPAIGN
     , message_type EN_MESSAGE_TYPE
-    , channel EN_CHANNEL
+    , messages.channel EN_MESSAGE_CHANNEL
     , FL_IS_OPENED
     , FL_IS_CLICKED
     , FL_IS_PURCHASED

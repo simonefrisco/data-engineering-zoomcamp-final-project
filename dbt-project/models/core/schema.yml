@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: fact_messages
+    description: ""
+    columns:
+    - name :  ID_MESSAGE
+    - name :  ID_CLIENT
+    - name :  ID_CAMPAIGN
+    - name :  EN_MESSAGE_TYPE
+    - name :  EN_MESSAGE_CHANNEL
+    - name :  FL_IS_OPENED
+    - name :  FL_IS_CLICKED
+    - name :  FL_IS_PURCHASED
+    - name :  DT_SENT_AT
+    - name :  DT_OPEN_FIRST_TIME
+    - name :  EN_CAMPAIGN_CHANNEL
+    - name :  EN_CAMPAIGN_TYPE
+    - name :  VAL_CAMPAIGN_TOTAL_COUNT
