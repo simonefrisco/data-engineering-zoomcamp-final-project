@@ -16,21 +16,21 @@ uri_holidays = "{{ vars.aws_s3_bucket }}/deltalake/l0_holidays"
 print('1. Dump CSV Campaigns Table')
 (
     pl
-    .read_csv('{{workingDir}}/campaigns.csv', try_parse_dates=True)
+    .scan_csv('{{workingDir}}/campaigns.csv', try_parse_dates=True)
     .sink_parquet("{{workingDir}}/campaigns.parquet")
 )
 
 print('2. Dump CSV Client First Date')
 (
     pl
-    .read_csv('{{workingDir}}/client_first_purchase_date.csv', try_parse_dates=True)
+    .scan_csv('{{workingDir}}/client_first_purchase_date.csv', try_parse_dates=True)
     .sink_parquet("{{workingDir}}/client_first_purchase_date.parquet")
 )
 
 print('3. Dump CSV Holidays')
 (
     pl
-    .read_csv('{{workingDir}}/holidays.csv', try_parse_dates=True)
+    .scan_csv('{{workingDir}}/holidays.csv', try_parse_dates=True)
     .sink_parquet("{{workingDir}}/holidays.parquet")
 
 )
