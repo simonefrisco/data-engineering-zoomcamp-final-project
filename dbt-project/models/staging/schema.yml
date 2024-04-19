@@ -1,0 +1,52 @@
+version: 2
+
+sources:
+  - name: staging
+    database: dev
+     # For postgres:
+      #database: production
+    schema: public
+
+      # loaded_at_field: record_loaded_at
+    tables:
+      - name: l0_campaigns
+      - name: l0_messages
+      - name : l0_first_touch
+
+models:
+    - name: l0_campaigns
+      columns:
+          - name: id
+            tests:
+                - unique:
+                    severity: warn
+                - not_null:
+                    severity: warn
+          - name: campaign_type 
+          - name: channel 
+          - name: topic
+          - name: finished_at
+          - name: total_count
+          - name: is_test
+
+    - name: l0_messages
+      columns:
+          - name: message_id
+            tests:
+                - unique:
+                    severity: warn
+                - not_null:
+                    severity: warn
+          - name: client_id 
+          - name: campaign_id
+            tests:
+                  - relationships:
+                      to: ref('l0_campaigns')
+                      field: id
+          - name: message_type
+          - name: channel
+          - name: is_opened
+          - name: is_clicked
+          - name: is_purchased
+          - name: sent_at
+          - name: opened_first_time_at
