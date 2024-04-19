@@ -1,0 +1,40 @@
+id: 2-dbt-jobs
+namespace: dev
+description: Save and Execute the flow
+
+tasks:
+  - id: git
+    type: io.kestra.core.tasks.flows.WorkingDirectory
+    tasks:
+    - id: clone_repository
+      type: io.kestra.plugin.git.Clone
+      url: https://github.com/simonefrisco/data-engineering-zoomcamp-final-project
+      branch: main
+
+    - id: move_folder
+      type : io.kestra.plugin.scripts.shell.Commands
+      commands:
+        - "mv ./dbt-project/* ."
+
+    - id: dbt
+      type: io.kestra.plugin.dbt.cli.DbtCLI
+      docker:
+        image: ghcr.io/kestra-io/dbt-redshift:latest
+      profiles: |
+        default:
+          outputs:
+            dev:
+              type: redshift
+              host: "{{ secret('REDSHIFT_HOST') }}"
+              user: "{{ secret('REDSHIFT_USER') }}"
+              password: "{{ secret('REDSHIFT_PASSWORD') }}"
+              port: 5439
+              dbname: dev
+              schema: public
+              autocommit: true # autocommit after each statement
+              threads: 8
+              connect_timeout: 10
+          target: dev
+      commands:
+        - dbt deps
+        - dbt build
