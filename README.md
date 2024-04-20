@@ -68,7 +68,8 @@ Requirements:
 ```
 sudo docker-compose up -d
 ```
-
+- Go to the public IP address of the EC2 instance in a browser (make sure to use hhtp and not https)
+- It should load the Kestra UI with the login form : 
 
 ## 4.1 Initialize Prod Namespace
 
@@ -77,6 +78,13 @@ In order to sync the namespace files with our repo, the simplest way is using [g
 - Navigate to your public IP address 
 - Insert username and password
 - Create your first Kestra Flow in the UI editor -> Create Flow -> Save -> Execute :
+    - Insert username and password that you setup in step 3.3
+
+- Click on "Create"
+
+![alt text](image-5.png)
+
+- Copy/Paste the following snippet in order to import all Flow definition from **[./kestra_prod](https://github.com/simonefrisco/data-engineering-zoomcamp-final-project/tree/main/kestra_prod)** to the Kestra Istance
 
 ```yaml
 id: sync_from_git
@@ -89,7 +97,7 @@ tasks:
     branch: main
     gitDirectory: kestra_prod # optional, otherwise all files
     namespaceFilesDirectory: prod # optional, otherwise the namespace root directory
-    dryRun: true  # if true, print the output of what files will be added/modified or deleted without overwriting the files yet
+    dryRun: false  # if true, print the output of what files will be added/modified or deleted without overwriting the files yet
 
 triggers:
   - id: every_day

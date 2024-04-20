@@ -79,7 +79,7 @@ kestra:
       - .env_encoded
 ```
 
-### 3.4 etup Kaggle Auth
+### 3.4 Setup Kaggle Auth
 
 In order to fetch the dataset using the Kaggle Public API we need the auth .json file:
 - Just click on the generate token button at your [kaggle profile page](https://www.kaggle.com/settings/account)
