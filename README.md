@@ -72,7 +72,7 @@ Requirements:
 - Kaggle Account
 - Redshift Cluster
 
-# 4) Run Kestra
+# 4) Run Flows
 
 ```
 sudo docker-compose up -d
@@ -127,8 +127,14 @@ The folder contains all Flow definitions (in YAML format) and Python scripts tha
 
 - Fetch .zip file with Kaggle API
 - Upload the file in S3 bucket
-
+<!-- 
 ![alt text](assets/image.png)
+![alt text](image.png) -->
+
+<div style="display: flex; align-items: center; justify-content: center;">
+  <img src="assets/image.png" width="300" />
+  <img src="assets/image-10.png" width="100%" style="max-width: calc(100% - 350px);" />
+</div>
 
 ### Flow 1
 
@@ -144,8 +150,8 @@ The folder contains all Flow definitions (in YAML format) and Python scripts tha
 ![alt text](assets/image-6.png) -->
 
 <div style="display: flex; align-items: center; justify-content: center;">
-  <img src="assets/image-1.png" width="200" />
-  <img src="assets/image-6.png" width="100%" style="max-width: calc(100% - 250px);" />
+  <img src="assets/image-1.png" width="300" />
+  <img src="assets/image-6.png" width="100%" style="max-width: calc(100% - 350px);" />
 </div>
 
 ### Flow 2
@@ -159,8 +165,8 @@ The folder contains all Flow definitions (in YAML format) and Python scripts tha
 <!-- ![alt text](assets/image-2.png)
 ![alt text](assets/image-7.png) -->
 <div style="display: flex; align-items: center; justify-content: center;">
-  <img src="assets/image-2.png" width="200" />
-  <img src="assets/image-7.png" width="100%" style="max-width: calc(100% - 250px);" />
+  <img src="assets/image-2.png" width="300" />
+  <img src="assets/image-7.png" width="100%" style="max-width: calc(100% - 350px);" />
 </div>
 
 ### Flow 3
@@ -181,3 +187,12 @@ The folder contains all Flow definitions (in YAML format) and Python scripts tha
   <img src="assets/image-3.png" width="400" />
   <img src="assets/image-7.png" width="100%" style="max-width: calc(100% - 450px);" />
 </div>
+
+5) Datawarehouse
+
+- Final database structure of the Redshift data warehouse with staging, analiytics schemas:
+![alt text](image-11.png)
+
+6) Dashboard
+
+TBD
