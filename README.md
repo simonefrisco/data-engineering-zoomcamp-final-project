@@ -70,13 +70,24 @@ triggers:
 
 ## 4.2 Run 
 
+- **[./kestra_prod](https://github.com/simonefrisco/data-engineering-zoomcamp-final-project/tree/main/kestra_prod)**
+
+The folder contains all Flow definitions (in YAML format) and Python scripts that will be executed by the flows.
+
+
 ### Flow 0
+
+> Download Data
+
 - Fetch .zip file with Kaggle API
 - Upload the file in S3 bucket
 
 ![alt text](image.png)
 
 ### Flow 1
+
+> Data Raw to Datalake
+
 
 - Download zip from S3 bucket
 - Extract CSV file
@@ -87,6 +98,9 @@ triggers:
 
 ### Flow 2
 
+> Datalake to Data Warehouse
+
+
 - Create 3 empty Redshift tables: Messages, Campaigns, First Purchase
 - Upload data from parquet files into Redshift tables with COPY command
 
@@ -94,6 +108,9 @@ triggers:
 
 
 ### Flow 3
+> Dbt Project 
+
+![alt text](image-4.png)
 
 - Clone current repo
 - Move **[./dbt-project](https://github.com/simonefrisco/data-engineering-zoomcamp-final-project/tree/main/dbt-project)** to the root
