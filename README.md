@@ -67,3 +67,36 @@ triggers:
     type: io.kestra.core.models.triggers.types.Schedule
     cron: "0 0 */1 * *"
 ```
+
+## 4.2 Run 
+
+### Flow 0
+- Fetch .zip file with Kaggle API
+- Upload the file in S3 bucket
+
+![alt text](image.png)
+
+### Flow 1
+
+- Download zip from S3 bucket
+- Extract CSV file
+- Convert CSV to Parquet with Polars
+- Upload parquet files to S3
+
+![alt text](image-1.png)
+
+### Flow 2
+
+- Create 3 empty Redshift tables: Messages, Campaigns, First Purchase
+- Upload data from parquet files into Redshift tables with COPY command
+
+![alt text](image-2.png)
+
+
+### Flow 3
+
+- Clone current repo
+- Move **[./dbt-project](https://github.com/simonefrisco/data-engineering-zoomcamp-final-project/tree/main/dbt-project)** to the root
+- Run `dbt init` and `dbt build`
+
+![alt text](image-3.png)

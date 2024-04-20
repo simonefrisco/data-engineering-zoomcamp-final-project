@@ -23,7 +23,7 @@ tasks:
         algorithm: ZIP
         from: "{{outputs.downloadFromS3.uri}}"
   
-      - id : uploadTable
+      - id : csvToParquet
         type: io.kestra.plugin.scripts.python.Script
         runner: DOCKER
         docker:
