@@ -2,6 +2,35 @@
 
 # Dataset
 
+This dataset contains multi-channel messages of medium sized online store for 2 years.
+
+Channels: email, web push, mobile push, SMS.
+
+Campaign types: bulk, triggers, transactional.
+
+Notice: this dataset contains messages-demo.csv file limited to 10M messages. I use this dataset due the fact that is avaible trou Kaggle API. The original dataset contains more than 700M messages.
+
+- **campaigns.csv**
+All messages are related to some kind of campaigns:
+
+1. Bulk campaigns are sent for sale outs and before holidays to stimulate sales and bring back customers.
+2. Trigger messages (like abandoned cart) are sent automatically based on user's behavior. More users visited website/app – more trigger messages are sent.
+3. Transactional messages are used for some kind of information delivery process: bonuses added, order delivery status changed, etc.
+
+- **messages.csv**
+Messages table contains a list of all messages sent with its statuses and meta info:
+
+1. Campaign
+2. Channel
+3. Type
+4. Opened (when)
+5. Clicked (when)
+6. Purchase
+
+- **client_first_purchase_date.csv**
+The file has 2 columns:
+1. Client ID
+2. Date of the first purchase ever
 
 # 1) Technologies
 
