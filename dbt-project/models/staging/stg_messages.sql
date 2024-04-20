@@ -3,7 +3,7 @@
 with messages as 
 (
   select *
-  from {{ source('staging','l0_messages') }}
+  from {{ source('staging','raw_messages') }}
 )
 select
     message_id

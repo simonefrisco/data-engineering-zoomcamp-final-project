@@ -6,12 +6,7 @@ storage_options = {
     "AWS_SECRET_ACCESS_KEY": "{{ secret('AWS_SECRET_KEY') }}", 
     "AWS_REGION" : "eu-central-1",
     'AWS_S3_ALLOW_UNSAFE_RENAME': 'true'}
-# print(storage_options)
 
-uri_messages = "{{ vars.aws_s3_bucket }}/deltalake/l0_messages"
-uri_campaigns = "{{ vars.aws_s3_bucket }}/deltalake/l0_campaigns"
-uri_client_first_purchase_date = "{{ vars.aws_s3_bucket }}/deltalake/l0_client_first_purchase_date"
-uri_holidays = "{{ vars.aws_s3_bucket }}/deltalake/l0_holidays"
 
 print('1. Dump CSV Campaigns Table')
 (

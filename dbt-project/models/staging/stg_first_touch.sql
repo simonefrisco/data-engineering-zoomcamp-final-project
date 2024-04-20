@@ -3,7 +3,7 @@
 with first_touch as 
 (
   select *
-  from {{ source('staging','l0_first_touch') }}
+  from {{ source('staging','raw_first_touch') }}
 )
 select
      client_id

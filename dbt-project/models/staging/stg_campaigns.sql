@@ -3,7 +3,7 @@
 with campaigns as 
 (
   select *
-  from {{ source('staging','l0_campaigns') }}
+  from {{ source('staging','raw_campaigns') }}
 )
 select
     id
