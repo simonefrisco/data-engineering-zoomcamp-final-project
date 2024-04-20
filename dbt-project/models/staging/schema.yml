@@ -9,12 +9,12 @@ sources:
 
       # loaded_at_field: record_loaded_at
     tables:
-      - name: l0_campaigns
-      - name: l0_messages
-      - name : l0_first_touch
+      - name: raw_campaigns
+      - name: raw_messages
+      - name : raw_first_touch
 
 models:
-    - name: l0_campaigns
+    - name: raw_campaigns
       columns:
           - name: id
             tests:
@@ -29,7 +29,7 @@ models:
           - name: total_count
           - name: is_test
 
-    - name: l0_messages
+    - name: raw_messages
       columns:
           - name: message_id
             tests:
@@ -41,7 +41,7 @@ models:
           - name: campaign_id
             tests:
                   - relationships:
-                      to: ref('l0_campaigns')
+                      to: ref('raw_campaigns')
                       field: id
           - name: message_type
           - name: channel
@@ -51,7 +51,7 @@ models:
           - name: sent_at
           - name: opened_first_time_at
 
-    - name: l0_first_touch
+    - name: raw_first_touch
       columns:
           - name: client_id
           - name: first_purchase_date

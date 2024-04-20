@@ -42,5 +42,5 @@ print('4.  Dump CSV Messages')
     .with_columns([
         pl.col("date").dt.strftime('%Y-%m-%d').alias("date_day")
     ])
-    .sink_parquet("{{workingDir}}/messages-demo.parquet")
+    .sink_parquet("{{workingDir}}/messages.parquet")
 )
