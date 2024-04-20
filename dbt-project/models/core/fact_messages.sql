@@ -9,7 +9,7 @@ with
     )
 
 select 
-        m.message_id ID_MESSAGE
+    m.message_id ID_MESSAGE
     , m.client_id ID_CLIENT
     , m.campaign_id ID_CAMPAIGN
     , m.message_type EN_MESSAGE_TYPE

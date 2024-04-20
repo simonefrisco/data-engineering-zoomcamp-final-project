@@ -1,5 +1,7 @@
 # Retail Marketing Campaigns
 
+> This is not the final submission of the project, after the submission I updated the readme with more details on the complete ETL process and revised the code
+
 # Dataset
 
 This dataset contains multi-channel messages of medium sized online store for 2 years.
@@ -89,7 +91,7 @@ In order to sync the namespace files with our repo, the simplest way is using [g
 
 - Click on "Create"
 
-![alt text](image-5.png)
+![alt text](assets/image-5.png)
 
 - Copy/Paste the following snippet in order to import all Flow definition from **[./kestra_prod](https://github.com/simonefrisco/data-engineering-zoomcamp-final-project/tree/main/kestra_prod)** to the Kestra Istance
 
@@ -126,7 +128,7 @@ The folder contains all Flow definitions (in YAML format) and Python scripts tha
 - Fetch .zip file with Kaggle API
 - Upload the file in S3 bucket
 
-![alt text](image.png)
+![alt text](assets/image.png)
 
 ### Flow 1
 
@@ -138,7 +140,13 @@ The folder contains all Flow definitions (in YAML format) and Python scripts tha
 - Convert CSV to Parquet with Polars
 - Upload parquet files to S3
 
-![alt text](image-1.png)
+<!-- ![alt text](assets/image-1.png)
+![alt text](assets/image-6.png) -->
+
+<div style="display: flex; align-items: center; justify-content: center;">
+  <img src="assets/image-1.png" width="200" />
+  <img src="assets/image-6.png" width="100%" style="max-width: calc(100% - 250px);" />
+</div>
 
 ### Flow 2
 
@@ -148,16 +156,28 @@ The folder contains all Flow definitions (in YAML format) and Python scripts tha
 - Create 3 empty Redshift tables: Messages, Campaigns, First Purchase
 - Upload data from parquet files into Redshift tables with COPY command
 
-![alt text](image-2.png)
-
+<!-- ![alt text](assets/image-2.png)
+![alt text](assets/image-7.png) -->
+<div style="display: flex; align-items: center; justify-content: center;">
+  <img src="assets/image-2.png" width="200" />
+  <img src="assets/image-7.png" width="100%" style="max-width: calc(100% - 250px);" />
+</div>
 
 ### Flow 3
 > Dbt Project 
 
-![alt text](image-4.png)
+<!-- ![alt text](assets/image-4.png)
+![alt text](assets/image-8.png) -->
+<div style="display: flex; align-items: center; justify-content: center;">
+  <img src="assets/image-4.png" />
+</div>
 
 - Clone current repo
 - Move **[./dbt-project](https://github.com/simonefrisco/data-engineering-zoomcamp-final-project/tree/main/dbt-project)** to the root
 - Run `dbt init` and `dbt build`
 
-![alt text](image-3.png)
+<!-- ![alt text](assets/image-3.png) -->
+<div style="display: flex; align-items: center; justify-content: center;">
+  <img src="assets/image-3.png" width="400" />
+  <img src="assets/image-7.png" width="100%" style="max-width: calc(100% - 450px);" />
+</div>

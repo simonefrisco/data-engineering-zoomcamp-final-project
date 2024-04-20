@@ -15,9 +15,6 @@ models:
     - name :  DT_SENT_AT
     - name :  DT_OPEN_FIRST_TIME
     - name :  DT_FIRST_PURCHASE
-    # - name :  EN_CAMPAIGN_CHANNEL
-    # - name :  EN_CAMPAIGN_TYPE
-    # - name :  VAL_CAMPAIGN_TOTAL_COUNT
   - name: dim_campaigns
     description: ""
     columns:
