@@ -188,7 +188,7 @@ The folder contains all Flow definitions (in YAML format) and Python scripts tha
   <img src="assets/image-7.png" width="100%" style="max-width: calc(100% - 450px);" />
 </div>
 
-5) Datawarehouse
+# 5) Datawarehouse
 
 - Final database structure of the Redshift data warehouse with staging, analiytics schemas:
 ![alt text](image-11.png)
