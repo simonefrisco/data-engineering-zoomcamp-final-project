@@ -32,6 +32,13 @@ The file has 2 columns:
 1. Client ID
 2. Date of the first purchase ever
 
+## Note:
+
+Despite the fact that the project is not focused on building a complex data pipeline, I put more effort into delving deeper:
+- Setup of all necessary infrastructure
+- Kestra ETL 
+- Studying and getting my hands dirty with new technologies such as AWS Redshift, EC2, Docker Compose and Dbt
+
 # 1) Technologies
 
 - **Cloud:** AWS

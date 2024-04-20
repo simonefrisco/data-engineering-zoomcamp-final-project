@@ -54,7 +54,7 @@ curl -o docker-compose.yml https://raw.githubusercontent.com/kestra-io/kestra/de
 cat docker-compose.yml
 nano docker-compose.yml
 ```
-make change in order to macth the docker-compose.yml file:
+make change in order to match the docker-compose.yml file:
 
 - Auth Configuration 
 
@@ -68,7 +68,7 @@ make change in order to macth the docker-compose.yml file:
 ```
 - Postgres Configuration
 
-For simplicity I do not create a rds instance but I use the local postgres service provided by the docker-compose file.
+For simplicity I do not create a dedicate RDS instance but I use the local postgres service provided by the docker-compose file.
 
 - Enviroment Variable Configuration
 
@@ -86,7 +86,8 @@ In order to fetch the dataset using the Kaggle Public API we need the auth .json
 
 ### Setup Secrets
 
-Create a .env file with `nano .env` and set credentials from kaggle.json file:
+- Make sure to setup the Redshift Cluster, I used the Serverless Redshift Service (that give you 300$ as free credit)
+- Create a .env file with `nano .env` and set credentials from kaggle.json file:
 
 ```
 KAGGLE_USERNAME=XXXXXXXX
