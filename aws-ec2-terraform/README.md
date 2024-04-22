@@ -1,6 +1,6 @@
-# Intro
+# Setup
 
-## 2.1  Clone official template
+## 2.1  Official template (ignore these instructions)
 I created a terraform project folder starting from the official template:
 
 > credit : https://github.com/kestra-io/terraform-deployments/tree/main/aws-ec2
@@ -10,7 +10,7 @@ git clone https://github.com/kestra-io/terraform-deployments/
 move .\terraform-deployments\aws-ec2 .\aws-ec2
 rmdir /s /q .\terraform-deployments
 ```
-At this point, following the readme istructions you have to :
+
 1) create a secrets.tfvars file with the following variables:
 ```
 db_username= "xxxx"
@@ -24,7 +24,7 @@ aws_secret_key= "xxxx"
 
 ! Attention, make sure to change the ami-xxxxxxx value based on your aws region
 
-Sadly, I was able to deploy almost all resources tranne the webserver.
+Sadly, I was able to deploy almost all resources but not the webserver.
 
 I think that the problem was in some of the docker configuration so I decided to deploy the webserver partially manually.
 
@@ -40,6 +40,7 @@ At the **[./aws-ec2](https://github.com/simonefrisco/data-engineering-zoomcamp-f
 
 ```
 set AWS_PROFILE=your-aws-cli-profile
+cd aws-ec2-terraform
 terraform init
 terraform apply -var-file="secrets.tfvars"
 ```
@@ -58,7 +59,7 @@ When you want:
 terraform destroy -var-file="secrets.tfvars"
 ```
 
-# Deploy Kestra on AWS
+# Official template - Deploy Kestra on AWS
 
 This repository contains Terraform files to deploy Kestra on AWS with the following components:
 * **AWS EC2**: to host Kestra server

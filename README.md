@@ -77,7 +77,8 @@ Requirements:
 ```
 sudo docker-compose up -d
 ```
-- Go to the public IP address of the EC2 instance in a browser (make sure to use hhtp and not https)
+- Go to the public IP address of the EC2 instance in a browser (make sure to use http and not https)
+- add :8080 to your public IP
 - It should load the Kestra UI with the login form : 
 
 ## 4.1 Initialize Prod Namespace
@@ -191,7 +192,7 @@ The folder contains all Flow definitions (in YAML format) and Python scripts tha
 # 5) Datawarehouse
 
 - Final database structure of the Redshift data warehouse with staging, analiytics schemas:
-![alt text](image-11.png)
+![alt text](assets/image-11.png)
 
 6) Dashboard
 

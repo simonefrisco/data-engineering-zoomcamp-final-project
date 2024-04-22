@@ -54,7 +54,8 @@ curl -o docker-compose.yml https://raw.githubusercontent.com/kestra-io/kestra/de
 cat docker-compose.yml
 nano docker-compose.yml
 ```
-make change in order to match the docker-compose.yml file:
+
+Make change in order to match the docker-compose.yml file:
 
 - Auth Configuration 
 
@@ -79,14 +80,22 @@ kestra:
       - .env_encoded
 ```
 
-### 3.4 Setup Kaggle Auth
+## 3.4 Setup Kaggle Auth
 
 In order to fetch the dataset using the Kaggle Public API we need the auth .json file:
 - Just click on the generate token button at your [kaggle profile page](https://www.kaggle.com/settings/account)
 
-### Setup Secrets
+## 3.5 Setup Redshift Istance
 
-- Make sure to setup the Redshift Cluster, I used the Serverless Redshift Service (that give you 300$ as free credit)
+Make sure to setup the Redshift Cluster, I used the Serverless Redshift Service (that give you 300$ as free credit)
+
+> Do not setup the redshift istance you don't have a free credit
+
+I used this tutorial https://medium.com/@parkashpant1989/use-dbt-core-with-amazon-redshift-59dd29ce515f in order to setup my redshift istance.
+The IAM role env variable refer to the default IAM role defined in the tutorial.
+
+## 3.6 Setup Secrets
+
 - Create a .env file with `nano .env` and set credentials from kaggle.json file:
 
 ```
