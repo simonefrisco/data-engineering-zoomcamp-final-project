@@ -1,4 +1,6 @@
-# Retail Marketing Campaigns
+# Retail Marketing Campaigns (Data Engineering Zoomcamp Project)
+
+![alt text](image.png)
 
 > This is not the final submission of the project, after the submission I updated the readme with more details on the complete ETL process and revised the code
 
